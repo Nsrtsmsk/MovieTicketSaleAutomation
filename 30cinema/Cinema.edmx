@@ -1,0 +1,608 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CinemaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="HALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HALLNAME" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MHS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MOVIEID" Type="int" />
+          <Property Name="HALLID" Type="int" />
+          <Property Name="SESSIONID" Type="int" />
+        </EntityType>
+        <EntityType Name="MHSS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MHSID" Type="int" />
+          <Property Name="SEATNO" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MOVIE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MOVIENAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="DIRECTOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="GENRE" Type="nvarchar" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="IMAGE" Type="nvarchar(max)" />
+          <Property Name="DURATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="STATUS" Type="bit" />
+        </EntityType>
+        <EntityType Name="SEAT">
+          <Key>
+            <PropertyRef Name="SEATNO" />
+          </Key>
+          <Property Name="SEATNO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="SESSION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SESSIONTIME" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TICKET">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MHSSID" Type="int" />
+          <Property Name="USERID" Type="int" />
+        </EntityType>
+        <EntityType Name="TICKETDETAILS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TICKETID" Type="int" />
+          <Property Name="PAYMENTTYPE" Type="bit" />
+          <Property Name="PAYMENTTOTAL" Type="money" />
+          <Property Name="DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PASSWORD" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_MHS_HALL">
+          <End Role="HALL" Type="Self.HALL" Multiplicity="0..1" />
+          <End Role="MHS" Type="Self.MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="HALLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MHS_MOVIE">
+          <End Role="MOVIE" Type="Self.MOVIE" Multiplicity="0..1" />
+          <End Role="MHS" Type="Self.MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOVIE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="MOVIEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MHS_SESSION">
+          <End Role="SESSION" Type="Self.SESSION" Multiplicity="0..1" />
+          <End Role="MHS" Type="Self.MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SESSION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="SESSIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MHSS_MHS">
+          <End Role="MHS" Type="Self.MHS" Multiplicity="0..1" />
+          <End Role="MHSS" Type="Self.MHSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MHS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHSS">
+              <PropertyRef Name="MHSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MHSS_SEAT">
+          <End Role="SEAT" Type="Self.SEAT" Multiplicity="0..1" />
+          <End Role="MHSS" Type="Self.MHSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEAT">
+              <PropertyRef Name="SEATNO" />
+            </Principal>
+            <Dependent Role="MHSS">
+              <PropertyRef Name="SEATNO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_MHSS">
+          <End Role="MHSS" Type="Self.MHSS" Multiplicity="0..1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MHSS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="MHSSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKETDETAILS_TICKET">
+          <End Role="TICKET" Type="Self.TICKET" Multiplicity="0..1" />
+          <End Role="TICKETDETAILS" Type="Self.TICKETDETAILS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TICKET">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKETDETAILS">
+              <PropertyRef Name="TICKETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CinemaModelStoreContainer">
+          <EntitySet Name="HALL" EntityType="Self.HALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MHS" EntityType="Self.MHS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MHSS" EntityType="Self.MHSS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MOVIE" EntityType="Self.MOVIE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SEAT" EntityType="Self.SEAT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SESSION" EntityType="Self.SESSION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TICKET" EntityType="Self.TICKET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TICKETDETAILS" EntityType="Self.TICKETDETAILS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MHS_HALL" Association="Self.FK_MHS_HALL">
+            <End Role="HALL" EntitySet="HALL" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MHS_MOVIE" Association="Self.FK_MHS_MOVIE">
+            <End Role="MOVIE" EntitySet="MOVIE" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MHS_SESSION" Association="Self.FK_MHS_SESSION">
+            <End Role="SESSION" EntitySet="SESSION" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MHSS_MHS" Association="Self.FK_MHSS_MHS">
+            <End Role="MHS" EntitySet="MHS" />
+            <End Role="MHSS" EntitySet="MHSS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MHSS_SEAT" Association="Self.FK_MHSS_SEAT">
+            <End Role="SEAT" EntitySet="SEAT" />
+            <End Role="MHSS" EntitySet="MHSS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_MHSS" Association="Self.FK_TICKET_MHSS">
+            <End Role="MHSS" EntitySet="MHSS" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_USER" Association="Self.FK_TICKET_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKETDETAILS_TICKET" Association="Self.FK_TICKETDETAILS_TICKET">
+            <End Role="TICKET" EntitySet="TICKET" />
+            <End Role="TICKETDETAILS" EntitySet="TICKETDETAILS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CinemaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CinemaaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="HALL" EntityType="CinemaModel.HALL" />
+          <EntitySet Name="MHS" EntityType="CinemaModel.MHS" />
+          <EntitySet Name="SESSION" EntityType="CinemaModel.SESSION" />
+          <EntitySet Name="TICKET" EntityType="CinemaModel.TICKET" />
+          <EntitySet Name="USER" EntityType="CinemaModel.USER" />
+          <AssociationSet Name="FK_MHS_HALL" Association="CinemaModel.FK_MHS_HALL">
+            <End Role="HALL" EntitySet="HALL" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MHS_SESSION" Association="CinemaModel.FK_MHS_SESSION">
+            <End Role="SESSION" EntitySet="SESSION" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_USER" Association="CinemaModel.FK_TICKET_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="CinemaModel.sysdiagrams" />
+          <EntitySet Name="MHSS" EntityType="CinemaModel.MHSS" />
+          <AssociationSet Name="FK_MHSS_MHS" Association="CinemaModel.FK_MHSS_MHS">
+            <End Role="MHS" EntitySet="MHS" />
+            <End Role="MHSS" EntitySet="MHSS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TICKET_MHSS" Association="CinemaModel.FK_TICKET_MHSS">
+            <End Role="MHSS" EntitySet="MHSS" />
+            <End Role="TICKET" EntitySet="TICKET" />
+          </AssociationSet>
+          <EntitySet Name="SEAT" EntityType="CinemaModel.SEAT" />
+          <AssociationSet Name="FK_MHSS_SEAT" Association="CinemaModel.FK_MHSS_SEAT">
+            <End Role="SEAT" EntitySet="SEAT" />
+            <End Role="MHSS" EntitySet="MHSS" />
+          </AssociationSet>
+          <EntitySet Name="MOVIE" EntityType="CinemaModel.MOVIE" />
+          <AssociationSet Name="FK_MHS_MOVIE" Association="CinemaModel.FK_MHS_MOVIE">
+            <End Role="MOVIE" EntitySet="MOVIE" />
+            <End Role="MHS" EntitySet="MHS" />
+          </AssociationSet>
+          <EntitySet Name="TICKETDETAILS" EntityType="CinemaModel.TICKETDETAILS" />
+          <AssociationSet Name="FK_TICKETDETAILS_TICKET" Association="CinemaModel.FK_TICKETDETAILS_TICKET">
+            <End Role="TICKET" EntitySet="TICKET" />
+            <End Role="TICKETDETAILS" EntitySet="TICKETDETAILS" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="HALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HALLNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MHS" Relationship="CinemaModel.FK_MHS_HALL" FromRole="HALL" ToRole="MHS" />
+        </EntityType>
+        <EntityType Name="MHS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MOVIEID" Type="Int32" />
+          <Property Name="HALLID" Type="Int32" />
+          <Property Name="SESSIONID" Type="Int32" />
+          <NavigationProperty Name="HALL" Relationship="CinemaModel.FK_MHS_HALL" FromRole="MHS" ToRole="HALL" />
+          <NavigationProperty Name="SESSION" Relationship="CinemaModel.FK_MHS_SESSION" FromRole="MHS" ToRole="SESSION" />
+          <NavigationProperty Name="MHSS" Relationship="CinemaModel.FK_MHSS_MHS" FromRole="MHS" ToRole="MHSS" />
+          <NavigationProperty Name="MOVIE" Relationship="CinemaModel.FK_MHS_MOVIE" FromRole="MHS" ToRole="MOVIE" />
+        </EntityType>
+        <EntityType Name="SESSION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SESSIONTIME" Type="Time" Precision="7" />
+          <NavigationProperty Name="MHS" Relationship="CinemaModel.FK_MHS_SESSION" FromRole="SESSION" ToRole="MHS" />
+        </EntityType>
+        <EntityType Name="TICKET">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MHSSID" Type="Int32" />
+          <Property Name="USERID" Type="Int32" />
+          <NavigationProperty Name="USER" Relationship="CinemaModel.FK_TICKET_USER" FromRole="TICKET" ToRole="USER" />
+          <NavigationProperty Name="MHSS" Relationship="CinemaModel.FK_TICKET_MHSS" FromRole="TICKET" ToRole="MHSS" />
+          <NavigationProperty Name="TICKETDETAILS" Relationship="CinemaModel.FK_TICKETDETAILS_TICKET" FromRole="TICKET" ToRole="TICKETDETAILS" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TICKET" Relationship="CinemaModel.FK_TICKET_USER" FromRole="USER" ToRole="TICKET" />
+        </EntityType>
+        <Association Name="FK_MHS_HALL">
+          <End Type="CinemaModel.HALL" Role="HALL" Multiplicity="0..1" />
+          <End Type="CinemaModel.MHS" Role="MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="HALLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MHS_SESSION">
+          <End Type="CinemaModel.SESSION" Role="SESSION" Multiplicity="0..1" />
+          <End Type="CinemaModel.MHS" Role="MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SESSION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="SESSIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_USER">
+          <End Type="CinemaModel.USER" Role="USER" Multiplicity="0..1" />
+          <End Type="CinemaModel.TICKET" Role="TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="MHSS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MHSID" Type="Int32" />
+          <Property Name="SEATNO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MHS" Relationship="CinemaModel.FK_MHSS_MHS" FromRole="MHSS" ToRole="MHS" />
+          <NavigationProperty Name="TICKET" Relationship="CinemaModel.FK_TICKET_MHSS" FromRole="MHSS" ToRole="TICKET" />
+          <NavigationProperty Name="SEAT" Relationship="CinemaModel.FK_MHSS_SEAT" FromRole="MHSS" ToRole="SEAT" />
+        </EntityType>
+        <Association Name="FK_MHSS_MHS">
+          <End Type="CinemaModel.MHS" Role="MHS" Multiplicity="0..1" />
+          <End Type="CinemaModel.MHSS" Role="MHSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MHS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHSS">
+              <PropertyRef Name="MHSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TICKET_MHSS">
+          <End Type="CinemaModel.MHSS" Role="MHSS" Multiplicity="0..1" />
+          <End Type="CinemaModel.TICKET" Role="TICKET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MHSS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKET">
+              <PropertyRef Name="MHSSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SEAT">
+          <Key>
+            <PropertyRef Name="SEATNO" />
+          </Key>
+          <Property Name="SEATNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="MHSS" Relationship="CinemaModel.FK_MHSS_SEAT" FromRole="SEAT" ToRole="MHSS" />
+        </EntityType>
+        <Association Name="FK_MHSS_SEAT">
+          <End Type="CinemaModel.SEAT" Role="SEAT" Multiplicity="0..1" />
+          <End Type="CinemaModel.MHSS" Role="MHSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEAT">
+              <PropertyRef Name="SEATNO" />
+            </Principal>
+            <Dependent Role="MHSS">
+              <PropertyRef Name="SEATNO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MOVIE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MOVIENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DIRECTOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GENRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DURATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Boolean" />
+          <NavigationProperty Name="MHS" Relationship="CinemaModel.FK_MHS_MOVIE" FromRole="MOVIE" ToRole="MHS" />
+        </EntityType>
+        <Association Name="FK_MHS_MOVIE">
+          <End Type="CinemaModel.MOVIE" Role="MOVIE" Multiplicity="0..1" />
+          <End Type="CinemaModel.MHS" Role="MHS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOVIE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MHS">
+              <PropertyRef Name="MOVIEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TICKETDETAILS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TICKETID" Type="Int32" />
+          <Property Name="PAYMENTTYPE" Type="Boolean" />
+          <Property Name="PAYMENTTOTAL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DATE" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TICKET" Relationship="CinemaModel.FK_TICKETDETAILS_TICKET" FromRole="TICKETDETAILS" ToRole="TICKET" />
+        </EntityType>
+        <Association Name="FK_TICKETDETAILS_TICKET">
+          <End Type="CinemaModel.TICKET" Role="TICKET" Multiplicity="0..1" />
+          <End Type="CinemaModel.TICKETDETAILS" Role="TICKETDETAILS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TICKET">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TICKETDETAILS">
+              <PropertyRef Name="TICKETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CinemaModelStoreContainer" CdmEntityContainer="CinemaaEntities">
+          <EntitySetMapping Name="HALL">
+            <EntityTypeMapping TypeName="CinemaModel.HALL">
+              <MappingFragment StoreEntitySet="HALL">
+                <ScalarProperty Name="HALLNAME" ColumnName="HALLNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MHS">
+            <EntityTypeMapping TypeName="CinemaModel.MHS">
+              <MappingFragment StoreEntitySet="MHS">
+                <ScalarProperty Name="SESSIONID" ColumnName="SESSIONID" />
+                <ScalarProperty Name="HALLID" ColumnName="HALLID" />
+                <ScalarProperty Name="MOVIEID" ColumnName="MOVIEID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SESSION">
+            <EntityTypeMapping TypeName="CinemaModel.SESSION">
+              <MappingFragment StoreEntitySet="SESSION">
+                <ScalarProperty Name="SESSIONTIME" ColumnName="SESSIONTIME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TICKET">
+            <EntityTypeMapping TypeName="CinemaModel.TICKET">
+              <MappingFragment StoreEntitySet="TICKET">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="MHSSID" ColumnName="MHSSID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER">
+            <EntityTypeMapping TypeName="CinemaModel.USER">
+              <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CinemaModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MHSS">
+            <EntityTypeMapping TypeName="CinemaModel.MHSS">
+              <MappingFragment StoreEntitySet="MHSS">
+                <ScalarProperty Name="SEATNO" ColumnName="SEATNO" />
+                <ScalarProperty Name="MHSID" ColumnName="MHSID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SEAT">
+            <EntityTypeMapping TypeName="CinemaModel.SEAT">
+              <MappingFragment StoreEntitySet="SEAT">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="SEATNO" ColumnName="SEATNO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MOVIE">
+            <EntityTypeMapping TypeName="CinemaModel.MOVIE">
+              <MappingFragment StoreEntitySet="MOVIE">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="DURATION" ColumnName="DURATION" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="GENRE" ColumnName="GENRE" />
+                <ScalarProperty Name="DIRECTOR" ColumnName="DIRECTOR" />
+                <ScalarProperty Name="MOVIENAME" ColumnName="MOVIENAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TICKETDETAILS">
+            <EntityTypeMapping TypeName="CinemaModel.TICKETDETAILS">
+              <MappingFragment StoreEntitySet="TICKETDETAILS">
+                <ScalarProperty Name="DATE" ColumnName="DATE" />
+                <ScalarProperty Name="PAYMENTTOTAL" ColumnName="PAYMENTTOTAL" />
+                <ScalarProperty Name="PAYMENTTYPE" ColumnName="PAYMENTTYPE" />
+                <ScalarProperty Name="TICKETID" ColumnName="TICKETID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="241b53a3e51a48239ff1c84807de0bec" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="CinemaModel.HALL" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="CinemaModel.MHS" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="CinemaModel.SESSION" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="CinemaModel.TICKET" Width="1.5" PointX="7.5" PointY="1.25" />
+        <EntityTypeShape EntityType="CinemaModel.USER" Width="1.5" PointX="5.25" PointY="5.375" />
+        <AssociationConnector Association="CinemaModel.FK_MHS_HALL" />
+        <AssociationConnector Association="CinemaModel.FK_MHS_SESSION" />
+        <AssociationConnector Association="CinemaModel.FK_TICKET_USER" />
+        <EntityTypeShape EntityType="CinemaModel.sysdiagrams" Width="1.5" PointX="3.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CinemaModel.MHSS" Width="1.5" PointX="5.25" PointY="1.25" />
+        <AssociationConnector Association="CinemaModel.FK_MHSS_MHS" />
+        <AssociationConnector Association="CinemaModel.FK_TICKET_MHSS" />
+        <EntityTypeShape EntityType="CinemaModel.SEAT" Width="1.5" PointX="7.375" PointY="4.875" />
+        <AssociationConnector Association="CinemaModel.FK_MHSS_SEAT" />
+        <EntityTypeShape EntityType="CinemaModel.MOVIE" Width="1.5" PointX="0.75" PointY="8" />
+        <AssociationConnector Association="CinemaModel.FK_MHS_MOVIE" />
+        <EntityTypeShape EntityType="CinemaModel.TICKETDETAILS" Width="1.5" PointX="9.75" PointY="1.25" />
+        <AssociationConnector Association="CinemaModel.FK_TICKETDETAILS_TICKET" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
